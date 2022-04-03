@@ -7,13 +7,13 @@ public class BodyMassIndex {
         double weight,
                 height,
                 BMI;
-        String input, input2;
+        String input;
 
         //JOptionPane.showMessageDialog(null,"Hello! What is your weight?");
         input = JOptionPane.showInputDialog("Hello! What is your weight?");
         weight= Double.parseDouble(input);
-        input2 = JOptionPane.showInputDialog("What is your height?");
-        height = Double.parseDouble(input2);
+        input = JOptionPane.showInputDialog("What is your height?");
+        height = Double.parseDouble(input);
         BMI = weight * 703 / (height * height);
         if (BMI >= 18.5 && BMI <= 25)
         {
