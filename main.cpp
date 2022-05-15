@@ -1,75 +1,116 @@
 //
 //  main.cpp
-//  PayrollClass
+//  CritterCharacter
 //
-//  Created by MacBook Air on 05.05.2022.
+//  Created by MacBook Air on 15.05.2022.
 //
 
 #include <iostream>
 
-
 using namespace std;
 
-class Payroll
+class Critter
 {
-    double hourlyPR;
-    double numberHW;
-    double totalPayForTheWeek;
-    
 public:
-    //setter
-    void set_hourlyPR(double h)
-    {
-        hourlyPR = h;
-    }
-    void set_numberHW(double n)
-    {
-        numberHW = n;
-    }
-    void set_totalPayForTheWeek(double t)
-    {
-        totalPayForTheWeek = t;
-    }
+    Critter(int hunger = 0, int boredom = 0);
+    void Talk();
+    void Eat(int food = 4);
+    void Play(int fun = 4);
     
-    //getter
-    double get_hourlyPR() const
-    {
-        return hourlyPR;
-    }
-    double get_numberHW() const
-    {
-        return numberHW;
-    }
-    double get_totalPayForTheWeek() const
-    {
-        return hourlyPR*numberHW;
-    }
+private:
+    int m_Hunger;
+    int m_Boredom;
     
-    
+    int GetMood() const;
+    void PassTime(int time = 1);
 };
+
+Critter::Critter(int hunger, int boredom):
+        m_Hunger(hunger),
+        m_Boredom(boredom)
+{}
+
+inline int Critter::GetMood() const
+{
+    return (m_Hunger + m_Boredom);
+}
+
+void Critter::PassTime(int time)
+{
+    m_Hunger += time;
+    m_Boredom += time;
+}
+
+void Critter::Talk()
+{
+    cout << "I'm a critter and I feel ";
+    int mood = GetMood();
+    if(mood > 15)
+        cout << "mad.\n";
+    else if (mood > 10)
+        cout << "frustrated.\n";
+    else if (mood > 5)
+        cout << "okay.\n";
+    else
+        cout << "happy.\n";
+    PassTime();
+}
+
+void Critter::Eat(int food)
+{
+    cout << "Brruppp.\n";
+    m_Hunger -= food;
+    if (m_Hunger < 0)
+        m_Hunger = 0;
+    PassTime();
+}
+
+void Critter::Play(int fun)
+{
+    cout << "Wheee!\n";
+    m_Boredom -= fun;
+    if (m_Boredom < 0)
+        m_Boredom = 0;
+    PassTime();
+}
 
 int main(int argc, const char * argv[])
 {
-    const int Size = 2;
-    double hourlyPR;
-    double numberHW;
-    //double totalPayForTheWeek;
+    Critter crit;
+    crit.Talk();
     
-    Payroll *employee;
-    employee = new Payroll[Size];
-    for (int i = 0; i < Size; i++)
+    int choice;
+    do
     {
-        cout << "How many hours employee has worked duirng the week?\n";
-        cin >> numberHW;
-        employee[i].set_numberHW(numberHW);
-        cout << "What is the employee's hourly pay rate: \n";
-        cin >> hourlyPR;
-        employee[i].set_hourlyPR(hourlyPR);
-        cout << "Total: $" << employee[i].get_totalPayForTheWeek() << "\n";
-    }
+        cout << "\nCritter Caretaker\n\n";
+        cout << "0 - Quit\n";
+        cout << "1 - Listen to your critter\n";
+        cout << "2 - Feed your critter\n";
+        cout << "3 - Play with your critter\n\n";
+        
+        cout << "Choice: ";
+        cin >> choice;
+        
+        switch (choice)
+        {
+            case 0:
+                cout << "Good-bye.\n";
+                break;
+            case 1:
+                crit.Talk();
+                break;
+            case 2:
+                crit.Eat();
+                break;
+            case 3:
+                crit.Play();
+                break;
+                
+            default:
+                cout << "\nSorry, but " << choice << " isn't a valid choice.\n";
+                break;
+        }
+    }while (choice != 0);
 
-    delete [] employee;
-    employee = nullptr;
-    
     return 0;
 }
